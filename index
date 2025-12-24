@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【デモ】瀬戸内オーシャン × ふるさと納税 | 広島県広島市の極上牡蠣</title>
+    <meta name="description" content="【デモサイト】ジャパンフードセレクション・グランプリ受賞。加熱しても縮まない瀬戸内オーシャンの広島牡蠣を、ふるさと納税の返礼品で。実質2,000円で味わう至宝。">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body { font-family: 'Zen Old Mincho', 'Noto Serif JP', serif; }
+        .font-sans-custom { font-family: 'Helvetica Neue', Arial, sans-serif; }
+        
+        /* 修正点: 固定ヘッダーの被り防止設定を追加 */
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 100px; /* ヘッダーの高さ+αの余白をさらに確保 */
+        }
+
+        /* Custom Colors & Gradients */
+        .text-gold { color: #BF953F; }
+        .bg-gold { background-color: #BF953F; }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-gradient {
+            border-image: linear-gradient(135deg, #BF953F 0%, #FCF6BA 50%, #AA771C 100%) 1;
+        }
+
+        /* Animations */
+        @keyframes zoomIn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .animate-zoom { animation: zoomIn 20s infinite alternate linear; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+
+        /* Portal Button Styles */
+        .btn-portal {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-portal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-choice { background-color: #59b1eb; color: white; }
+        .btn-rakuten { background-color: #bf0000; color: white; }
+        .btn-ana { background-color: #153e7e; color: white; }
+        .btn-furunavi { background-color: #e60012; color: white; }
+
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+
+        /* MicroCMS Modal Styles */
+        .prose h2 { font-size: 1.4rem; font-weight: bold; margin-top: 2em; margin-bottom: 0.8em; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.3em; color: #1e3a8a; }
+        .prose h3 { font-size: 1.2rem; font-weight: bold; margin-top: 1.5em; margin-bottom: 0.5em; color: #1f2937; }
+        .prose p { margin-bottom: 1.2em; line-height: 1.8; color: #374151; }
+        .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1.5em; }
+        .prose a { color: #2563eb; text-decoration: underline; }
+        .prose img { max-width: 100%; height: auto; border-radius: 8px; margin: 1.5em 0; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Fixed Header -->
+    <header class="fixed w-full z-50 bg-slate-900/95 backdrop-blur-sm shadow-xl transition-all duration-300">
+        <div class="container mx-auto px-4 h-16 md:h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <!-- デモ用社名 -->
+                <h1 class="text-xl md:text-2xl font-bold text-white tracking-widest">SETOUCHI OCEAN</h1>
+                <span class="hidden lg:inline-block bg-sky-600 text-white text-[10px] px-2 py-1 rounded tracking-wider">広島県広島市 ふるさと納税</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm tracking-wider text-slate-300">
+                <a href="#about" class="hover:text-white transition">瀬戸内のこだわり</a>
+                <a href="#features" class="hover:text-white transition">縮まない理由</a>
+                <a href="#lineup" class="hover:text-amber-400 transition text-amber-200 font-bold">返礼品一覧</a>
+            </nav>
+            <a href="#lineup" class="bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 text-white px-6 py-3 rounded-sm shadow-lg transition font-bold text-sm tracking-widest flex items-center gap-2">
+                寄付を申し込む <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-[500px] md:h-[700px] flex items-center justify-center overflow-hidden bg-slate-900">
+        <div class="absolute inset-0 z-0">
+            <!-- 
+                ★画像差し替えポイント 1
+                【場所】ファーストビュー背景
+                【推奨】シズル感のある新鮮な牡蠣の画像（横長、高画質）
+                【現在の画像】Unsplashのダミー画像
+            -->
+            <img src="https://lh3.googleusercontent.com/pw/AP1GczMGzhHh98DqKrqqZEI2acAY3s6Tbk-S6dEgJYetxRuZdqD98Fl7on1pU-LgL6LND57j4BzRbvyrjKW5B1p58kpbIEdMTJrnbi0WRCZvLjP2lh8AhoM0Q8mqkhv5_V62r543OXwyd_bhJX4IELsTv40=w2204-h1646-s-no-gm?authuser=0" alt="瀬戸内オーシャンの広島牡蠣" class="w-full h-full object-cover animate-zoom opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/40"></div>
+        </div>
+
+        <!-- 修正点：mt-32 md:mt-48 を mt-12 md:mt-16 に戻して、ボタンが画面内に収まるように調整 -->
+        <div class="relative z-10 text-center text-white px-4 max-w-5xl mx-auto mt-12 md:mt-16">
+            <!-- Award Badge -->
+            <div class="inline-flex items-center gap-3 border border-amber-400/50 bg-black/60 backdrop-blur px-6 py-3 rounded-full mb-8 animate-float shadow-[0_0_20px_rgba(191,149,63,0.3)]">
+                <i class="fa-solid fa-crown text-amber-400 text-xl"></i>
+                <span class="text-amber-100 font-bold tracking-widest text-sm md:text-base">ジャパンフードセレクション <span class="text-amber-400 text-lg">グランプリ受賞</span></span>
+            </div>
+
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight text-shadow font-serif">
+                縮まない、<br>
+                <span class="gold-gradient-text">旨味</span>の極致。
+            </h2>
+            
+            <p class="text-base md:text-xl font-sans-custom tracking-wider opacity-90 mb-12 leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+                加熱用に最適化された、広島・瀬戸内オーシャンの牡蠣。<br>
+                その濃厚な味わいを、ふるさと納税で。
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#lineup" class="group relative overflow-hidden bg-sky-600 text-white px-12 py-4 rounded-sm shadow-2xl transition-all hover:bg-sky-500 hover:scale-105 w-full sm:w-auto">
+                    <span class="relative font-bold text-lg tracking-widest">返礼品を選ぶ</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section (MicroCMS) -->
+    <section class="bg-white border-b border-slate-100 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded">NEWS</span>
+                    <span class="text-xs text-slate-500 font-sans-custom">在庫・発送情報</span>
+                </div>
+                <!-- IDを修正: JSと合わせるために id="news-list-container" を付与 -->
+                <div id="news-list-container" class="flex-1 w-full">
+                    <p class="text-sm text-slate-600"><i class="fa-solid fa-spinner fa-spin mr-2"></i>読み込み中...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authority & Story -->
+    <section id="about" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2 relative">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t-4 border-l-4 border-amber-500/30"></div>
+                    <!-- 
+                        ★画像差し替えポイント 2
+                        【場所】こだわりセクション
+                        【推奨】生産者の作業風景、または調理イメージ
+                        【現在の画像】Unsplashのダミー画像
+                    -->
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczM9GS4WIDw-UsWWzrwSYd4PlEX3Cw4tSUsJGMTHwW5hPoL2rR7u3H1qvtbvNvRCRbudwe_eKP2Y3O4l55ifmEn2PFdmbykRhGx2X5OwfoydjK6_U3CchTyhvnyXaXKzgvPIw1-3kGltMriqycZmxbo=w1024-h559-s-no-gm?authuser=0" alt="伝統と革新" class="rounded-lg shadow-2xl relative z-10 w-full">
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-4 border-r-4 border-amber-500/30"></div>
+                </div>
+                <div class="lg:w-1/2">
+                    <span class="text-amber-600 font-bold tracking-widest text-sm block mb-4">OUR STORY</span>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-8 leading-tight">
+                        昭和37年創業。<br>
+                        三代続く<span class="inline-block bg-amber-100 px-1 mt-1">伝統と革新</span>。
+                    </h3>
+                    <p class="text-slate-600 leading-loose mb-6 text-justify">
+                        広島の牡蠣養殖の歴史と共に歩んできた瀬戸内オーシャン。
+                        昭和37年、初代・瀬戸内太郎により創業され、2015年に法人化。現在は三代目がその伝統を受け継いでいます。
+                    </p>
+                    <p class="text-slate-600 leading-loose mb-8 text-justify">
+                        私たちのこだわりは、熟練の職人による「手作業」。
+                        機械化が進む中でも、身を傷つけないよう一つ一つ丁寧に殻を剥くことで、牡蠣本来の旨味を逃しません。
+                    </p>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-amber-500">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-award text-amber-500"></i> ジャパンフードセレクション グランプリ
+                        </h4>
+                        <p class="text-sm text-slate-500">
+                            2万3千人のフードアナリストが選ぶ評価制度で最高賞を受賞。「加熱しても縮まない」「生臭さがない」と高い評価をいただきました。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features (USP) -->
+    <section id="features" class="py-24 bg-slate-900 text-white relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-800 to-transparent opacity-50"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-20">
+                <span class="text-amber-400 tracking-widest text-sm font-bold block mb-2">QUALITY</span>
+                <h2 class="text-3xl md:text-5xl font-bold font-serif">
+                    なぜ、瀬戸内の牡蠣なのか。
+                </h2>
+                <div class="w-16 h-1 bg-amber-500 mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Feature 1 -->
+                <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 hover:border-amber-500 transition duration-300 group">
+                    <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-amber-600 transition">
+                        <i class="fa-solid fa-fire-burner text-2xl text-amber-400 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">加熱しても縮まない</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">
+                        江波の河口付近、栄養豊富なプランクトンを食べて育った牡蠣は身の入りが抜群。
+                        加熱用に最適化されており、鍋やフライにしてもふっくらとした存在感を保ちます。
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 hover:border-amber-500 transition duration-300 group">
+                    <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-amber-600 transition">
+                        <i class="fa-solid fa-water text-2xl text-amber-400 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">生臭さゼロの風味</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">
+                        水揚げから洗浄までを一貫管理。徹底した洗浄工程により、牡蠣特有の臭みを排除。
+                        「牡蠣は苦手だったけど、これは食べられた」というお声も多数いただきます。
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 hover:border-amber-500 transition duration-300 group">
+                    <div class="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center mb-6 group-hover:bg-amber-600 transition">
+                        <i class="fa-solid fa-shield-halved text-2xl text-amber-400 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">安心・安全への約束</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">
+                        「当たるのが怖い」を払拭するために。
+                        熟練職人の手剥きと厳格な品質管理で、お子様からご年配の方まで安心して召し上がっていただける品質を守り続けています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lineup Section (Main CV) -->
+    <section id="lineup" class="py-24 bg-slate-50 relative">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-16">
+                <span class="text-amber-600 tracking-widest text-sm font-bold block mb-2">LINEUP</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4">返礼品のご案内</h2>
+                <p class="text-slate-600">お好みのポータルサイトからお申し込みください</p>
+            </div>
+
+            <!-- Product 1: 1kg -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 mb-12 transform hover:-translate-y-1 transition duration-300">
+                <div class="flex flex-col lg:flex-row">
+                    <div class="lg:w-2/5 relative min-h-[300px]">
+                        <!-- 
+                            ★画像差し替えポイント 3
+                            【場所】商品画像（むき身1kg）
+                            【現在の画像】Unsplashのダミー画像
+                        -->
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczPAdrM3wC9AFnyxeqoB6QHt8gWsyvIBl6dRCHcivsA6ZI91Z7gT-9ByL0S7dY-d0j6KmFtJSvDjL5YGslFDpT0T8FHiR-_FU7KDGMrc7T7e4BvcdnK3U9c003OxDD-z4SY3sksAWY3IP-qRKvV3Twc=w1000-h621-s-no-gm?authuser=0">
+                        <div class="absolute top-0 left-0 bg-amber-500 text-white text-xs font-bold px-4 py-2">一番人気</div>
+                    </div>
+                    <div class="lg:w-3/5 p-8 lg:p-10 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-slate-800">広島産 牡蠣むき身 <span class="text-amber-600">1kg</span> (加熱用)</h3>
+                            <span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded border border-slate-200">冷蔵</span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                            カキフライ、牡蠣鍋、バターソテーに最適。殻剥き不要で、届いてすぐに調理可能です。
+                            たっぷり1kgの大容量で、ご家族皆様で存分にお楽しみいただけます。
+                        </p>
+                        
+                        <div class="mt-auto">
+                            <div class="flex items-end gap-2 mb-4">
+                                <span class="text-sm text-slate-500">寄付金額</span>
+                                <span class="text-3xl font-bold text-slate-900">13,000円〜</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <a href="https://www.furusato-tax.jp/product/detail/34100/6903839" target="_blank" class="btn-portal btn-choice py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <i class="fa-solid fa-gift text-lg"></i>ふるさとチョイス
+                                </a>
+                                <a href="https://item.rakuten.co.jp/f341002-hiroshima/ez004/" target="_blank" class="btn-portal btn-rakuten py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <span class="font-sans">R</span> 楽天ふるさと納税
+                                </a>
+                                <a href="https://furusato.ana.co.jp/donation/goods/search.aspx?search=x&keyword=%E3%83%A0%E3%82%AB%E3%82%A4%E6%B0%B4%E7%94%A3" target="_blank" class="btn-portal btn-ana py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <i class="fa-solid fa-plane-up text-lg"></i>ANAのふるさと納税
+                                </a>
+                                <a href="https://furunavi.jp/Product/Search?keyword=%E3%83%A0%E3%82%AB%E3%82%A4%E6%B0%B4%E7%94%A3" target="_blank" class="btn-portal btn-furunavi py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <span class="font-serif">F</span> ふるなび
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2: 500g -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 transform hover:-translate-y-1 transition duration-300">
+                <div class="flex flex-col lg:flex-row">
+                    <div class="lg:w-2/5 relative min-h-[300px]">
+                        <!-- 
+                            ★画像差し替えポイント 4
+                            【場所】商品画像（むき身500g）
+                            【現在の画像】Unsplashのダミー画像
+                        -->
+            <!-- ファイル名だけでOKです -->
+  <img src="https://lh3.googleusercontent.com/pw/AP1GczMnhA3oNqONMtpgO4Nm1woRiyozbz2mpo52-S640S9A1UlBj_U6fEyXaVUKV6NO7h_14ssRCtUp9y_7aLGffqu5sREH0cjAlc-d7Zo3CqXtijkQ2fOkZMo32Oqj8fCUtU26BMu_f39M2kXqNV4bpCk=w1000-h621-s-no-gm?authuser=0">
+                    </div>
+                    <div class="lg:w-3/5 p-8 lg:p-10 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-slate-800">広島産 牡蠣むき身 <span class="text-amber-600">500g</span> (加熱用)</h3>
+                            <span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded border border-slate-200">冷蔵</span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                            少人数世帯や、お試しにちょうど良いサイズ。
+                            まずは瀬戸内オーシャンの品質を確かめたい方や、一度の料理で使い切りたい方におすすめです。
+                        </p>
+                        
+                        <div class="mt-auto">
+                            <div class="flex items-end gap-2 mb-4">
+                                <span class="text-sm text-slate-500">寄付金額</span>
+                                <span class="text-3xl font-bold text-slate-900">7,000円〜</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <a href="https://www.furusato-tax.jp/product/detail/34100/6903838" target="_blank" class="btn-portal btn-choice py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <i class="fa-solid fa-gift text-lg"></i>ふるさとチョイス
+                                </a>
+                                <a href="https://item.rakuten.co.jp/f341002-hiroshima/ez001/" target="_blank" class="btn-portal btn-rakuten py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <span class="font-sans">R</span> 楽天ふるさと納税
+                                </a>
+                                <a href="https://furusato.ana.co.jp/donation/goods/search.aspx?search=x&keyword=%E3%83%A0%E3%82%AB%E3%82%A4%E6%B0%B4%E7%94%A3" target="_blank" class="btn-portal btn-ana py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <i class="fa-solid fa-plane-up text-lg"></i>ANAのふるさと納税
+                                </a>
+                                <a href="https://furunavi.jp/Product/Search?keyword=%E3%83%A0%E3%82%AB%E3%82%A4%E6%B0%B4%E7%94%A3" target="_blank" class="btn-portal btn-furunavi py-3 rounded text-center font-bold text-xs flex flex-col justify-center items-center gap-1">
+                                    <span class="font-serif">F</span> ふるなび
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Recipes / How to Eat -->
+    <section class="py-20 bg-slate-900 text-white">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-12">
+                <span class="text-amber-400 tracking-widest text-sm font-bold block mb-2">RECIPES</span>
+                <h2 class="text-3xl font-bold font-serif">美味しい召し上がり方</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 濃厚牡蠣鍋 -->
+                <div class="flex gap-6 items-center bg-slate-800 p-6 rounded-lg border border-slate-700">
+                    <!-- 
+                        ★画像差し替えポイント 5
+                        【場所】レシピ（牡蠣鍋）
+                        【現在の画像】AI生成画像
+                    -->
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczPJcxx0VInzdTrWNfNIZg0JAuHvHEp7fdzgwem2PXgfaD0V4eDTpjZKfrMLZpwCqGk_2GXvMgOs1dCGAdIHTD7iep4-fkaEN3dJG2IDEMmAXNq_XRhaupzyvMT972goOfMoHYDamFviXA9xlHMNni0=w1646-h1646-s-no-gm?authuser=0" class="w-24 h-24 object-cover rounded-full border-2 border-amber-500 shrink-0" alt="濃厚牡蠣鍋">
+                    <div>
+                        <h4 class="text-xl font-bold mb-2 text-amber-400">濃厚牡蠣鍋</h4>
+                        <p class="text-sm text-slate-300">良い出汁が出るだけでなく、煮込んでもプリプリ。野菜と一緒に広島の冬の味覚を。</p>
+                    </div>
+                </div>
+
+                <!-- 王道のカキフライ -->
+                <div class="flex gap-6 items-center bg-slate-800 p-6 rounded-lg border border-slate-700">
+                    <!-- 
+                        ★画像差し替えポイント 6
+                        【場所】レシピ（カキフライ）
+                        【現在の画像】AI生成画像
+                    -->
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczPaXiqXThfEm79ExSO_SinhKldadlOuDClWaxaP88OXcDWTIZoRpt4MH-LgrItXwRke3PFPT-8ILntIeaJSTVjw_DijKlmh4fYZgmx6I9rr4em8jK2y1NRhj-vOJ-NpOmjUfsle8LiqGAW9lI3AVh0=w1646-h1646-s-no-gm?authuser=0" class="w-24 h-24 object-cover rounded-full border-2 border-amber-500 shrink-0" alt="王道のカキフライ">
+                    <div>
+                        <h4 class="text-xl font-bold mb-2 text-amber-400">王道のカキフライ</h4>
+                        <p class="text-sm text-slate-300">身が縮まないので、衣の中で牡蠣が小さくなりません。ジューシーな肉汁溢れる最高のフライに。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-white font-bold text-xl tracking-widest mb-4">SETOUCHI OCEAN</h3>
+            <p class="text-sm mb-2">株式会社瀬戸内オーシャン</p>
+            <p class="text-sm mb-8">〒730-0000 広島県広島市中区瀬戸内1-1-1 瀬戸内ビル</p>
+            <div class="text-[10px] text-slate-500 mb-4">
+                寄付金の用途：広島市の「平和の推進」「文化の振興」「環境保全」などに活用されます。
+            </div>
+            <p class="text-xs opacity-50">&copy; Setouchi Ocean Co., Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for News Detail (新規追加) -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden z-[9999] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="modal-content">
+            <div class="p-6 md:p-8">
+                <div class="flex justify-between items-start mb-6 pb-4 border-b border-gray-100">
+                    <div>
+                        <span id="modal-date" class="text-sm text-gray-500 font-mono block mb-1"></span>
+                        <h3 id="modal-title" class="text-xl md:text-2xl font-bold text-gray-900"></h3>
+                    </div>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition ml-4">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <!-- 本文エリア -->
+                <div id="modal-body" class="prose max-w-none text-gray-700"></div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end rounded-b-lg">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-6 rounded transition">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script>
+        // =================================================================
+        // ▼▼▼ 設定エリア ▼▼▼
+        const SERVICE_DOMAIN = "setouchi-news"; 
+        const API_KEY = "c5AcphxEQ9nKr1CbwufF1jyWmYE8W11UBwsL";
+        const ENDPOINT = "news";
+        // =================================================================
+
+        // DOM要素
+        const listContainer = document.getElementById('news-list-container');
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        // --- 1. 一覧取得 ---
+        async function fetchList() {
+            try {
+                const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/${ENDPOINT}`, {
+                    headers: { "X-MICROCMS-API-KEY": API_KEY }
+                });
+                
+                if (!response.ok) {
+                    // エラーハンドリング
+                    if(response.status === 401) throw new Error("APIキーが正しくありません");
+                    if(response.status === 404) throw new Error("エンドポイントが見つかりません");
+                    throw new Error(`Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                renderList(data.contents);
+            } catch (error) {
+                console.error("News Load Error:", error);
+                listContainer.innerHTML = `<p class="text-sm text-red-500"><i class="fa-solid fa-circle-exclamation mr-1"></i>お知らせの読み込みに失敗しました。</p>`;
+            }
+        }
+
+        function renderList(contents) {
+            listContainer.innerHTML = "";
+            if (!contents || contents.length === 0) {
+                listContainer.innerHTML = '<p class="text-sm text-slate-500">現在お知らせはありません。</p>';
+                return;
+            }
+
+            // PCでは横並び、スマホでは縦並びで見やすく調整
+            const ul = document.createElement('ul');
+            ul.className = "flex flex-col gap-2";
+
+            contents.forEach(item => {
+                const dateStr = formatDate(item.date || item.publishedAt);
+                const category = parseCategory(item.category);
+                
+                const li = document.createElement('li');
+                li.className = "border-b border-slate-100 last:border-0 pb-2 last:pb-0";
+                
+                // モーダルを開くリンク
+                li.innerHTML = `
+                    <button onclick="openModal('${item.id}')" class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 w-full text-left group hover:bg-slate-50 transition p-2 rounded">
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-xs text-slate-400 font-mono">${dateStr}</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${category.color}">${category.name}</span>
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium group-hover:text-sky-600 transition truncate w-full">${item.title}</span>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-300 md:ml-auto"></i>
+                    </button>
+                `;
+                ul.appendChild(li);
+            });
+            
+            listContainer.appendChild(ul);
+        }
+
+        // --- 2. モーダル操作 (詳細取得) ---
+        async function openModal(id) {
+            // モーダル表示 (ローディング状態)
+            modal.classList.remove('hidden');
+            // 少し遅れてopacityを変えることでフェードインさせる
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden'; // 背景スクロール固定
+            
+            // 中身をローディングに
+            document.getElementById('modal-title').textContent = "読み込み中...";
+            document.getElementById('modal-date').textContent = "";
+            document.getElementById('modal-body').innerHTML = `
+                <div class="animate-pulse space-y-4 py-8">
+                    <div class="h-4 bg-gray-200 rounded w-full"></div>
+                    <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                    <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+                </div>`;
+
+            try {
+                const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/${ENDPOINT}/${id}`, {
+                    headers: { "X-MICROCMS-API-KEY": API_KEY }
+                });
+                if (!response.ok) throw new Error("詳細の取得に失敗しました");
+                
+                const item = await response.json();
+                renderModalContent(item);
+
+            } catch (error) {
+                document.getElementById('modal-body').innerHTML = `<p class="text-red-500">記事の取得に失敗しました。</p>`;
+            }
+        }
+
+        function renderModalContent(item) {
+            const dateStr = formatDate(item.date || item.publishedAt);
+            const category = parseCategory(item.category);
+
+            document.getElementById('modal-date').textContent = dateStr;
+            document.getElementById('modal-title').textContent = item.title;
+            
+            // 本文がない場合のフォールバック
+            document.getElementById('modal-body').innerHTML = item.body || "<p class='text-gray-400 italic'>詳細情報はありません。</p>";
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // スクロール解除
+            }, 300); // transitionと同じ時間待つ
+        }
+
+        // モーダル外クリックで閉じる
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // --- ユーティリティ関数 ---
+        function formatDate(dateString) {
+            if(!dateString) return "";
+            const d = new Date(dateString);
+            return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function parseCategory(catData) {
+            let name = "お知らせ";
+            let color = "bg-slate-100 text-slate-600";
+            
+            if (catData) {
+                name = Array.isArray(catData) ? catData[0] : (catData.name || catData);
+            }
+            // カテゴリ名による色の出し分け
+            if (String(name).includes("重要")) color = "bg-red-100 text-red-600";
+            else if (String(name).includes("発送") || String(name).includes("在庫")) color = "bg-green-100 text-green-700";
+            else if (String(name).includes("メディア")) color = "bg-purple-100 text-purple-700";
+            
+            return { name, color };
+        }
+
+        // 開始
+        fetchList();
+
+    </script>
+</body>
+</html>
